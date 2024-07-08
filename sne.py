@@ -30,9 +30,15 @@ def intdif(z, Efunc, param):
 
 
 # read supernovae data
-z_sn, mb, dmb = np.loadtxt('binned.txt', usecols=(2,4,5), unpack=True, skiprows=1)
+z_sn, mb, dmb = np.loadtxt('data/binned.txt', usecols=(2,4,5), unpack=True, skiprows=1)
 z_sn, idsort = np.unique(z_sn, return_index=True) 
 mb = mb[idsort]
 dmb = dmb[idsort]
 
-plt.errorbar(z_sn, mb, yerr=dmb)
+
+d_sn = (1+z_sn)*intdif(z_sn, Esq, 0.3)
+m_sn = 5*np.log10(d_sn)
+
+# M_curl = 23.80
+plt.plot(z_sn,m_sn + 23.80)
+plt.errorbar(z_sn, mb, fmt='.', yerr=dmb, color='r')
