@@ -40,8 +40,8 @@ d_sn = (1+z_sn)*intdif(z_sn, Esq, 0.3)
 m_sn = 5*np.log10(d_sn)
 
 # M = -19.36
-# c/H0 = 3000
-# M_curl = M + 25  + 5 log_10 (3000)
-# M_curl = 23.02
+# c/H0 = 3000/0.7
+# M_curl = M + 25  + 5 log_10 (3000/0.7)
+# M_curl = 23.80
 plt.plot(z_sn,m_sn + 23.80)
 plt.errorbar(z_sn, mb, fmt='.', yerr=dmb, color='r')
