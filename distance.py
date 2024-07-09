@@ -28,7 +28,7 @@ def intdif(z, Efunc, param):
 #
 # MAIN
 
-z =  np.linspace(0, 5, 100)
+z =  np.linspace(1e-2, 5, 100)
 Om = 0.3
 
 
