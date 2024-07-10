@@ -3,9 +3,6 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 
-# some constants
-omegb = 0.02226 # omega_b * h**2
-
 ######################
 #
 # Lambda CDM
@@ -28,20 +25,17 @@ def intdif(z, Efunc, param):
 #
 # MAIN
 
+################################################
+#
+# COSMIC CHRONOMETERS
 
-# read supernovae data
-z_sn, mb, dmb = np.loadtxt('data/binned.txt', usecols=(2,4,5), unpack=True, skiprows=1)
-z_sn, idsort = np.unique(z_sn, return_index=True) 
-mb = mb[idsort]
-dmb = dmb[idsort]
+# read cosmic chronometers data
+z_cc, H_cc, dH_cc = np.loadtxt('data/cosmic_chrono.txt', unpack=True, skiprows=1)
 
+h = 0.7
+Om = 0.3
 
-d_sn = (1+z_sn)*intdif(z_sn, Esq, 0.3)
-m_sn = 5*np.log10(d_sn)
+H_th = 100*h*np.sqrt(Esq(z_cc, Om))
 
-# M = -19.36
-# c/H0 = 3000/0.7
-# M_curl = M + 25  + 5 log_10 (3000/0.7)
-# M_curl = 23.80
-plt.plot(z_sn,m_sn + 23.80)
-plt.errorbar(z_sn, mb, fmt='.', yerr=dmb, color='r')
+plt.plot(z_cc, H_th)
+plt.errorbar(z_cc, H_cc, fmt='.',yerr=dH_cc, color='r')
