@@ -50,7 +50,7 @@ ddh_bao = np.array([0.76, 0.58, 0.60, 0.35, 0.42, 0.14])
 
 r_bao = np.array([0.228, 0.117, -0.42, -0.389, -0.444, -0.48])
 
-def rd(Om, h, omegb):
+def rd(Om, h):
     # DESI: 
     # Neff=3.04
     # omegb = 0.02236
