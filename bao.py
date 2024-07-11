@@ -79,11 +79,17 @@ dv = 2998*( (z*(intdif(z, Esq, Om))**2/np.sqrt(Esq(z,Om))) )**(1/3)/hr
 plt.figure()
 plt.plot(z, dm)
 plt.errorbar(z_bao, dm_bao, yerr=ddm_bao, fmt='.')
+plt.xlabel(r"$z$")
+plt.ylabel(r"$D_M(z)/r_d$")
 
 plt.figure()
 plt.plot(z, dh)
 plt.errorbar(z_bao, dh_bao, yerr=ddh_bao, fmt='.')
+plt.xlabel(r"$z$")
+plt.ylabel(r"$D_H(z)/r_d$")
 
 plt.figure()
 plt.plot(z, dv)
 plt.errorbar(z_v_bao, dv_bao, yerr=ddv_bao, fmt='.')
+plt.xlabel(r"$z$")
+plt.ylabel(r"$D_V(z)/r_d$")
