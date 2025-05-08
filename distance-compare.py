@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
+import timeit
 
 
 # some constants
@@ -26,13 +27,10 @@ def intdif(z, Efunc, param):
 
 # integral of 1/E(z) with solve_ivp and interpolation
 def intdif_interp(z, Efunc, param):
-    lx = 1000
-    zx = np.linspace(0, z[-1], lx)
     Ei = lambda x, y: Einv(x, Efunc, param)
-    sol = solve_ivp(Ei, [0, z[-1]],[0], t_eval=zx)
+    sol = solve_ivp(Ei, [0, z[-1]],[0], dense_output=True)
     # interpolate the solution
-    sol = np.interp(z, zx, sol.y.flatten())
-    return sol
+    return sol.sol(z).flatten()
 
 
 #######################################
@@ -50,24 +48,32 @@ Om = 0.3
 
 
 # distance
-dl = (1+z)*intdif(z, Esq, 0.3)
+dl1 = (1+z)*intdif(z, Esq, 0.3)
+dl2 = (1+z)*intdif_interp(z, Esq, 0.3)
+
+plt.plot(z, dl1, label="intdif")
+plt.plot(z, dl2, label="intdif_interp")
+
+print("Outputs close:", np.allclose(dl1, dl2, rtol=1e-5, atol=1e-8))
+print("Max absolute error:", np.max(np.abs(dl1 - dl2)))
+
+repeat = 300
+t1 = timeit.timeit(lambda: intdif(z, Esq, 0.3), number=repeat)
+t2 = timeit.timeit(lambda: intdif_interp(z, Esq, 0.3), number=repeat)
+
+print(f"Version 1 time: {t1:.6f} s")
+print(f"Version 2 time: {t2:.6f} s")
+print(t1/t2*100)
+
 
 # magnitude (not calibrated)
-m = 5*np.log10(dl)
+# m = 5*np.log10(dl)
 
 # plot magnitudes
 #plt.plot(z, m)
 
-def compare_versions(f1, f2, input_data, repeat=100):
-    import timeit
-    o1 = f1(input_data)
-    o2 = f2(input_data)
+# t1 = timeit.timeit(lambda: f1(input_data), number=repeat)
+# t2 = timeit.timeit(lambda: f2(input_data), number=repeat)
 
-    print("Outputs close:", np.allclose(o1, o2))
-    print("Max absolute error:", np.max(np.abs(o1 - o2)))
-
-    t1 = timeit.timeit(lambda: f1(input_data), number=repeat)
-    t2 = timeit.timeit(lambda: f2(input_data), number=repeat)
-
-    print(f"Version 1 time: {t1:.6f} s")
-    print(f"Version 2 time: {t2:.6f} s")
+# print(f"Version 1 time: {t1:.6f} s")
+# print(f"Version 2 time: {t2:.6f} s")
