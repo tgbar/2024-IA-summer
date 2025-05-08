@@ -57,3 +57,17 @@ m = 5*np.log10(dl)
 
 # plot magnitudes
 #plt.plot(z, m)
+
+def compare_versions(f1, f2, input_data, repeat=100):
+    import timeit
+    o1 = f1(input_data)
+    o2 = f2(input_data)
+
+    print("Outputs close:", np.allclose(o1, o2))
+    print("Max absolute error:", np.max(np.abs(o1 - o2)))
+
+    t1 = timeit.timeit(lambda: f1(input_data), number=repeat)
+    t2 = timeit.timeit(lambda: f2(input_data), number=repeat)
+
+    print(f"Version 1 time: {t1:.6f} s")
+    print(f"Version 2 time: {t2:.6f} s")
