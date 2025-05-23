@@ -21,8 +21,8 @@ def Einv(z, Efunc, param):
 # integral of 1/E(z) with solve_ivp
 def intdif(z, Efunc, param):
     Ei = lambda x, y: Einv(x, Efunc, param)
-    sol = solve_ivp(Ei, [0, z[-1]],[0], t_eval=z)
-    return sol.y.flatten()
+    sol = solve_ivp(Ei, [0, z[-1]],[0], dense_output=True)
+    return sol.sol(z).flatten()
 
 #######################################
 #
@@ -30,7 +30,7 @@ def intdif(z, Efunc, param):
 
 
 # read supernovae data
-z_sn, mb, dmb = np.loadtxt('data/binned.txt', usecols=(2,4,5), unpack=True, skiprows=1)
+z_sn, mb, dmb = np.loadtxt('data/Pantheon+SH0ES.dat', usecols=(2,8,9), unpack=True, skiprows=1)
 z_sn, idsort = np.unique(z_sn, return_index=True) 
 mb = mb[idsort]
 dmb = dmb[idsort]
